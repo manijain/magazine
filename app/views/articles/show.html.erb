@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @article.title %>
+</p>
+
+<p>
+  <strong>Body:</strong>
+  <%= @article.body %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @article.author %>
+</p>
+
+<%= link_to 'Edit', edit_article_path(@article) %> |
+<%= link_to 'Back', articles_path %>
+<hr>
+
+<h2>Listing Comments </h2>
+<% @article.comments.each do |comment| %>
+	<p><strong> Comment : </strong>
+	<%= comment.description %>
+	<%= link_to "Delete Comment", ([comment.article, comment]), method: :delete, data: {confirm: "Are you sure?" } %></p>
+  <p style="margin-left:30px;">
+    <%= form_for([@article, @article.comments.build]) do |f| %>
+      <%= f.text_area :description, :placeholder => "Your Reply" %><br>
+      <%= f.submit "submit" %>
+    <% end %>
+  </p>
+
+<% end %><br>
+
+<%= form_for([@article, @article.comments.build]) do |f| %>
+	<%= f.text_area :description, :placeholder => "Enter Your comment" %><br>
+	<%= f.submit "submit" %>
+<% end %>
