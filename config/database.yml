@@ -5,9 +5,9 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: postgres
+  adapter: postgresql
   username: postgres
-  password:
+  password: postgres
   pool: 5
   timeout: 5000
 

@@ -12,10 +12,10 @@
 
 <p>
   <strong>Author:</strong>
-  <%= @article.author %>
+  <%= @article.user.name %>
 </p>
 
-<%= link_to 'Edit', edit_article_path(@article) %> |
+<%= link_to 'Edit', edit_article_path(@article) if current_user.present? && @article.user.eql?(current_user) %> |
 <%= link_to 'Back', articles_path %>
 <hr>
 
@@ -27,12 +27,14 @@
       <% unless comment.parents.present? %>
         | <%= link_to "Delete Comment", ([comment.article, comment]), method: :delete, data: {confirm: "Are you sure?" } %>
         <% end %></p>
-        <b>Created by - <%= comment.user.email %></b>
+        <b>Created by - <%= comment.user.name %></b>
     <% end %><br><br>
     
-    <% comment.parents.each do |p| %>
-    ***********] <%= p.description %> <br><b>Replied by - <%= p.user.email %></b><br>
-    <% end %>
+    <div style="margin-left:60px;">
+      <% comment.parents.each do |p| %>
+      <%= p.description %> <br><b>Replied by - <%= p.user.name %></b><br>
+      <% end %>
+    </div>
 
     <% if comment.parent_id.blank? %>
       <div class="comment" style="margin-left:60px;">

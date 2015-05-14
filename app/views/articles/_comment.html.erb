@@ -1,0 +1,5 @@
+<%= form_for([@article, @article.comments.build]) do |f| %>
+	<%= f.text_area :description %><br>
+	<% hidden_field_tag "", comment.id %>
+	<%= f.submit "submit" %>
+<% end %>
