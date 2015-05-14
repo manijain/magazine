@@ -1,4 +1,15 @@
+
 <p id="notice"><%= notice %></p>
+
+<% if user_signed_in? %>
+  <li>
+  <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>        
+  </li>
+<% else %>
+  <li>
+  <%= link_to('Login', new_user_session_path)  %>  
+  </li>
+<% end %>
 
 <p>
   <strong>Title:</strong>
@@ -15,24 +26,23 @@
   <%= @article.user.name %>
 </p>
 
-<%= link_to 'Edit', edit_article_path(@article) if current_user.present? && @article.user.eql?(current_user) %> |
-<%= link_to 'Back', articles_path %>
+<%= link_to 'Edit', edit_article_path(@article) if current_user.present? && @article.user.eql?(current_user) %>
 <hr>
 
 <h2>Listing Comments </h2>
   <% @article.comments.each do |comment| %>
     <% if comment.parent_id.blank? %>
-    	<strong> Comment : </strong>
-      <p><%= comment.description %>
+    	<strong> Comment : <%= comment.description %> </strong>
+      
       <% unless comment.parents.present? %>
         | <%= link_to "Delete Comment", ([comment.article, comment]), method: :delete, data: {confirm: "Are you sure?" } %>
         <% end %></p>
-        <b>Created by - <%= comment.user.name %></b>
+        <p>Created by - <%= comment.user.name %></p>
     <% end %><br><br>
     
     <div style="margin-left:60px;">
       <% comment.parents.each do |p| %>
-      <%= p.description %> <br><b>Replied by - <%= p.user.name %></b><br>
+      <b><%= p.description %></b><br><p>Replied by - <%= p.user.name %></p><br>
       <% end %>
     </div>
 
@@ -40,7 +50,7 @@
       <div class="comment" style="margin-left:60px;">
         <%= form_for([@article, comment.parents.build]) do |f| %>
           <%= hidden_field_tag :parent_id, comment.id %>
-          <%= f.text_area :description, :placeholder => "Enter Your Reply" %><br>
+          <%= f.text_area :description, :placeholder => "Enter Your Reply", :style => "height:70px;width:150px;" %><br>
           <%= f.submit "Reply" %>
         <% end %>
       </div>
@@ -48,6 +58,8 @@
   <% end %>
 <hr>
 <%= form_for([@article, @article.comments.build]) do |f| %>
-	<%= f.text_area :description, :placeholder => "Enter Your comment" %><br>
+	<%= f.text_area :description, :placeholder => "Enter Your comment", :style => "height:170px;width:400px;" %><br>
 	<%= f.submit "submit" %>
-<% end %>
+<% end %><br>
+
+<%= link_to 'Back', articles_path %>
